@@ -9,7 +9,13 @@ A modern, responsive web application that displays Star Wars characters using th
 ### 🎯 Core Features
 
 - **Character List**: Browse through Star Wars characters with beautiful card layouts
-- **Pagination**: Navigate through multiple pages of characters
+- **Search**: Real-time search by character name with partial matching (case-insensitive)
+- **Advanced Filters**: Filter characters by:
+  - Homeworld (planet)
+  - Species
+  - Film appearances
+- **Combined Search & Filters**: Use search and filters together for precise results
+- **Pagination**: Navigate through multiple pages of characters (10 per page)
 - **Character Details**: Click on any character to view detailed information in a modal
 - **Species-Based Theming**: Each character card has distinct colors based on their species
 - **Random Images**: Each character displays a unique random image from Picsum Photos
@@ -43,6 +49,10 @@ The application displays the following information for each character:
 
 ### 🎨 UI/UX Features
 
+- **Smart Search Bar**: Clear button, search indicator, and real-time results
+- **Collapsible Filter Panel**: Clean interface with active filter badges
+- **Results Summary**: Shows filtered count and active search terms
+- **No Results State**: Helpful message with clear action button
 - **Loading States**: Elegant loading spinner while fetching data
 - **Error Handling**: User-friendly error messages with retry functionality
 - **Empty States**: Informative messages when no data is available
@@ -64,15 +74,18 @@ The application displays the following information for each character:
 src/
 ├── components/           # React components
 │   ├── CharacterCard.js       # Individual character card
-│   ├── CharacterList.js       # List of characters with pagination
+│   ├── CharacterList.js       # List with search, filters & pagination
 │   ├── CharacterModal.js      # Detailed character modal
+│   ├── SearchBar.js           # Search input component
+│   ├── FilterPanel.js         # Filter dropdown component
 │   ├── EmptyState.js          # Empty state component
 │   ├── ErrorMessage.js        # Error state component
 │   ├── Loading.js             # Loading state component
 │   ├── Pagination.js          # Pagination controls
 │   └── __tests__/             # Component tests
 ├── hooks/               # Custom React hooks
-│   ├── useCharacters.js       # Hook for fetching characters
+│   ├── useCharacters.js       # Hook for paginated characters
+│   ├── useAllCharacters.js    # Hook for all characters (filtering)
 │   ├── useHomeworld.js        # Hook for fetching homeworld data
 │   └── useSpecies.js          # Hook for fetching species data
 ├── services/            # API services
@@ -140,6 +153,8 @@ npm test
 **Test Files:**
 
 - `CharacterCard.test.js` - Tests for character card component
+- `SearchBar.test.js` - Tests for search functionality
+- `FilterPanel.test.js` - Tests for filter controls
 - `Loading.test.js` - Tests for loading state
 - `ErrorMessage.test.js` - Tests for error handling
 - `Pagination.test.js` - Tests for pagination controls
@@ -201,17 +216,29 @@ The application is fully responsive across devices:
 - Safari (latest)
 - Edge (latest)
 
+## Recent Features ✨
+
+**Search & Filter System** (Latest Update):
+
+- ✅ Real-time character name search
+- ✅ Filter by homeworld
+- ✅ Filter by species
+- ✅ Filter by film appearances
+- ✅ Combined search and filter support
+- ✅ Results summary and active filter indicators
+- ✅ Comprehensive test coverage
+
 ## Future Enhancements
 
 Potential features for future development:
 
-- Search and filter functionality
-- Sort by different attributes
+- Sort by different attributes (height, mass, etc.)
 - Favorites/bookmark feature
 - Dark mode toggle
 - Character comparison feature
-- Film details integration
+- Advanced film details integration
 - Vehicle and starship information
+- Export filtered results
 
 ## License
 

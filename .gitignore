@@ -18,6 +18,8 @@
 .env.test.local
 .env.production.local
 PROJECT_SUMMARY.md
+SEARCH_FILTER_FEATURES.md
+FEATURES_SUMMARY.md
 
 npm-debug.log*
 yarn-debug.log*

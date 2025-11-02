@@ -66,3 +66,24 @@ export const fetchSpecies = async (url) => {
     throw error;
   }
 };
+
+/**
+ * Fetches details about a specific film
+ * @param {string} url - The URL of the film
+ * @returns {Promise<Object>} - The film data
+ */
+export const fetchFilm = async (url) => {
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching film:", error);
+    throw error;
+  }
+};
