@@ -1,5 +1,5 @@
 import React from "react";
-import CharacterList from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/CharacterList";
+import CharacterList from "./components/CharacterList";
 import "./App.css";
 
 function App() {
@@ -72,7 +72,8 @@ function App() {
                 className="text-blue-500 hover:text-blue-700 font-semibold"
               >
                 SWAPI
-              </a>
+              </a>{" "}
+              | Made by <a href="https://www.linkedin.com/in/akansha-bharti/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-700 font-semibold">Akansha</a>
             </p>
             <p className="text-xs mt-2 text-gray-500">
               May the Force be with you!

@@ -1,15 +1,13 @@
-import React, { useState, useMemo } from "react";
-import { useAllCharacters } from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/hooks/useAllCharacters";
-import CharacterCard from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/CharacterCard";
-import CharacterModal from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/CharacterModal";
-import Pagination from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/Pagination";
-import SearchBar from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/SearchBar";
-import FilterPanel from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/FilterPanel";
-import Loading from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/Loading";
-import ErrorMessage from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/ErrorMessage";
-import EmptyState from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/EmptyState";
-
-const ITEMS_PER_PAGE = 10;
+import React, { useState, useMemo, useEffect } from "react";
+import { useCharacters } from "../hooks/useCharacters";
+import CharacterCard from "./CharacterCard";
+import CharacterModal from "./CharacterModal";
+import Pagination from "./Pagination";
+import SearchBar from "./SearchBar";
+import FilterPanel from "./FilterPanel";
+import Loading from "./Loading";
+import ErrorMessage from "./ErrorMessage";
+import EmptyState from "./EmptyState";
 
 /**
  * Character list component with search, filters, and pagination
@@ -24,12 +22,182 @@ const CharacterList = () => {
     species: "",
     film: "",
   });
+  const [enrichedCharacters, setEnrichedCharacters] = useState([]);
+  const [allCharactersCache, setAllCharactersCache] = useState([]);
+  const [isLoadingFilterOptions, setIsLoadingFilterOptions] = useState(false);
 
-  const { allCharacters, loading, error } = useAllCharacters();
+  const { characters, loading, error, totalPages } = useCharacters(currentPage);
 
-  // Apply search and filters
+  // Fetch all pages for filter dropdown options (run once on mount)
+  useEffect(() => {
+    const fetchAllForFilters = async () => {
+      setIsLoadingFilterOptions(true);
+      try {
+        const { fetchPeople, fetchPlanet, fetchSpecies, fetchFilm } =
+          await import("../services/swapiService");
+
+        // Fetch all pages
+        const allChars = [];
+        let page = 1;
+        let hasMore = true;
+
+        while (hasMore) {
+          try {
+            const data = await fetchPeople(page);
+            allChars.push(...data.results);
+            hasMore = data.next !== null;
+            page++;
+          } catch (err) {
+            console.error(`Error fetching page ${page}:`, err);
+            hasMore = false;
+          }
+        }
+
+        // Enrich only with basic info for filters
+        const enrichedForFilters = await Promise.all(
+          allChars.map(async (char) => {
+            let homeworldName = "Unknown";
+            let speciesName = "Human";
+            let filmTitles = [];
+
+            try {
+              if (char.homeworld) {
+                const homeworld = await fetchPlanet(char.homeworld);
+                homeworldName = homeworld.name;
+              }
+            } catch (err) {
+              console.error("Error fetching homeworld:", err);
+            }
+
+            try {
+              if (char.species && char.species.length > 0) {
+                const species = await fetchSpecies(char.species[0]);
+                speciesName = species.name;
+              }
+            } catch (err) {
+              console.error("Error fetching species:", err);
+            }
+
+            try {
+              if (char.films && char.films.length > 0) {
+                const filmPromises = char.films.map((filmUrl) =>
+                  fetchFilm(filmUrl)
+                );
+                const films = await Promise.all(filmPromises);
+                filmTitles = films.map((film) => film.title);
+              }
+            } catch (err) {
+              console.error("Error fetching films:", err);
+            }
+
+            return {
+              ...char,
+              homeworldName,
+              speciesName,
+              filmTitles,
+            };
+          })
+        );
+
+        setAllCharactersCache(enrichedForFilters);
+      } catch (err) {
+        console.error("Error loading filter options:", err);
+      } finally {
+        setIsLoadingFilterOptions(false);
+      }
+    };
+
+    fetchAllForFilters();
+  }, []); // Run once on mount
+
+  // Set characters immediately, then enrich in background
+  useEffect(() => {
+    if (!characters || characters.length === 0) {
+      setEnrichedCharacters([]);
+      return;
+    }
+
+    // Set characters immediately with default enrichment data
+    const initialCharacters = characters.map((char) => ({
+      ...char,
+      homeworldName: "Loading...",
+      speciesName: "Human",
+      filmTitles: [],
+    }));
+    setEnrichedCharacters(initialCharacters);
+
+    // Then enrich in background
+    const enrichCharacters = async () => {
+      const { fetchPlanet, fetchSpecies, fetchFilm } = await import(
+        "../services/swapiService"
+      );
+
+      const enriched = await Promise.all(
+        characters.map(async (character) => {
+          try {
+            let homeworldName = "Unknown";
+            let speciesName = "Human";
+            let filmTitles = [];
+
+            // Fetch homeworld
+            if (character.homeworld) {
+              try {
+                const homeworld = await fetchPlanet(character.homeworld);
+                homeworldName = homeworld.name;
+              } catch (err) {
+                console.error("Error fetching homeworld:", err);
+              }
+            }
+
+            // Fetch species
+            if (character.species && character.species.length > 0) {
+              try {
+                const species = await fetchSpecies(character.species[0]);
+                speciesName = species.name;
+              } catch (err) {
+                console.error("Error fetching species:", err);
+              }
+            }
+
+            // Fetch films
+            if (character.films && character.films.length > 0) {
+              try {
+                const filmPromises = character.films.map((filmUrl) =>
+                  fetchFilm(filmUrl)
+                );
+                const films = await Promise.all(filmPromises);
+                filmTitles = films.map((film) => film.title);
+              } catch (err) {
+                console.error("Error fetching films:", err);
+              }
+            }
+
+            return {
+              ...character,
+              homeworldName,
+              speciesName,
+              filmTitles,
+            };
+          } catch (err) {
+            return {
+              ...character,
+              homeworldName: "Unknown",
+              speciesName: "Human",
+              filmTitles: [],
+            };
+          }
+        })
+      );
+
+      setEnrichedCharacters(enriched);
+    };
+
+    enrichCharacters();
+  }, [characters]);
+
+  // Apply search and filters to current page only
   const filteredCharacters = useMemo(() => {
-    let result = [...allCharacters];
+    let result = [...enrichedCharacters];
 
     // Apply search filter (partial match, case-insensitive)
     if (searchQuery) {
@@ -60,16 +228,7 @@ const CharacterList = () => {
     }
 
     return result;
-  }, [allCharacters, searchQuery, filters]);
-
-  // Paginate filtered results
-  const paginatedCharacters = useMemo(() => {
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-    return filteredCharacters.slice(startIndex, endIndex);
-  }, [filteredCharacters, currentPage]);
-
-  const totalPages = Math.ceil(filteredCharacters.length / ITEMS_PER_PAGE);
+  }, [enrichedCharacters, searchQuery, filters]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -88,12 +247,10 @@ const CharacterList = () => {
 
   const handleSearchChange = (value) => {
     setSearchQuery(value);
-    setCurrentPage(1); // Reset to first page on search
   };
 
   const handleSearchClear = () => {
     setSearchQuery("");
-    setCurrentPage(1);
   };
 
   const handleFilterChange = (filterType, value) => {
@@ -101,7 +258,6 @@ const CharacterList = () => {
       ...prev,
       [filterType]: value,
     }));
-    setCurrentPage(1); // Reset to first page on filter change
   };
 
   const handleClearFilters = () => {
@@ -110,11 +266,10 @@ const CharacterList = () => {
       species: "",
       film: "",
     });
-    setCurrentPage(1);
   };
 
   const handleRetry = () => {
-    window.location.reload();
+    setCurrentPage(1);
   };
 
   // Loading state
@@ -128,12 +283,15 @@ const CharacterList = () => {
   }
 
   // Empty state - no characters loaded
-  if (!allCharacters || allCharacters.length === 0) {
+  if (!characters || characters.length === 0) {
     return <EmptyState />;
   }
 
   const hasActiveSearchOrFilters =
     searchQuery || filters.homeworld || filters.species || filters.film;
+
+  const displayCharacters =
+    filteredCharacters.length > 0 ? filteredCharacters : enrichedCharacters;
 
   return (
     <div className="w-full space-y-6">
@@ -150,7 +308,8 @@ const CharacterList = () => {
               filters={filters}
               onFilterChange={handleFilterChange}
               onClearFilters={handleClearFilters}
-              allCharacters={allCharacters}
+              allCharacters={allCharactersCache}
+              isLoadingOptions={isLoadingFilterOptions}
             />
           </div>
         </div>
@@ -163,7 +322,7 @@ const CharacterList = () => {
               <span className="font-semibold text-blue-600">
                 {filteredCharacters.length}
               </span>{" "}
-              of {allCharacters.length} characters
+              results on this page
               {searchQuery && (
                 <span>
                   {" "}
@@ -171,6 +330,9 @@ const CharacterList = () => {
                   "
                 </span>
               )}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              Note: Search and filters apply to the current page only
             </p>
           </div>
         )}
@@ -214,7 +376,7 @@ const CharacterList = () => {
         <>
           {/* Character Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {paginatedCharacters.map((character) => (
+            {displayCharacters.map((character) => (
               <CharacterCard
                 key={character.url}
                 character={character}

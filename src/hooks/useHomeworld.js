@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchPlanet } from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/services/swapiService";
+import { fetchPlanet } from "../services/swapiService";
 
 /**
  * Custom hook for fetching homeworld details

@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Pagination from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/Pagination";
+import Pagination from "../Pagination";
 
 describe("Pagination", () => {
   const mockOnPageChange = jest.fn();

@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { useHomeworld } from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/hooks/useHomeworld";
-import { useSpecies } from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/hooks/useSpecies";
+import { useHomeworld } from "../hooks/useHomeworld";
+import { useSpecies } from "../hooks/useSpecies";
 import {
   formatDate,
   getRandomImage,
   extractIdFromUrl,
   formatPopulation,
-} from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/utils/helpers";
+} from "../utils/helpers";
 
 /**
  * Character modal component showing detailed information

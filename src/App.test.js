@@ -2,14 +2,11 @@ import { render, screen } from "@testing-library/react";
 import App from "./App";
 
 // Mock the CharacterList component since it makes API calls
-jest.mock(
-  "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/CharacterList",
-  () => {
-    return function MockCharacterList() {
-      return <div data-testid="character-list">Character List</div>;
-    };
-  }
-);
+jest.mock("./components/CharacterList", () => {
+  return function MockCharacterList() {
+    return <div data-testid="character-list">Character List</div>;
+  };
+});
 
 test("renders Star Wars Characters header", () => {
   render(<App />);

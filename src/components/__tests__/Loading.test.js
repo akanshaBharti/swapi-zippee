@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Loading from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/Loading";
+import Loading from "../Loading";
 
 describe("Loading", () => {
   test("renders loading message", () => {

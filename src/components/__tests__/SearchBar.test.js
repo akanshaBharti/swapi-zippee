@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import SearchBar from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/SearchBar";
+import SearchBar from "../SearchBar";
 
 describe("SearchBar", () => {
   const mockOnChange = jest.fn();

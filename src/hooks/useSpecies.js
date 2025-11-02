@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchSpecies } from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/services/swapiService";
+import { fetchSpecies } from "../services/swapiService";
 
 /**
  * Custom hook for fetching species details

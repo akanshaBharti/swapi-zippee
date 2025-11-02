@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import FilterPanel from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/FilterPanel";
+import FilterPanel from "../FilterPanel";
 
 describe("FilterPanel", () => {
   const mockOnFilterChange = jest.fn();

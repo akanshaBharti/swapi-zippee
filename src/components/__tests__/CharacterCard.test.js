@@ -3,28 +3,19 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 // Mock the hooks and utilities
-jest.mock(
-  "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/hooks/useSpecies"
-);
+jest.mock("../../hooks/useSpecies");
 
-jest.mock(
-  "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/utils/helpers",
-  () => {
-    const actual = jest.requireActual(
-      "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/utils/helpers"
-    );
-    return {
-      ...actual,
-      getRandomImage: jest.fn(
-        (id) => `https://picsum.photos/seed/${id}/400/300`
-      ),
-      extractIdFromUrl: jest.fn((url) => 1),
-    };
-  }
-);
+jest.mock("../../utils/helpers", () => {
+  const actual = jest.requireActual("../../utils/helpers");
+  return {
+    ...actual,
+    getRandomImage: jest.fn((id) => `https://picsum.photos/seed/${id}/400/300`),
+    extractIdFromUrl: jest.fn((url) => 1),
+  };
+});
 
-import CharacterCard from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/components/CharacterCard";
-import { useSpecies } from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/hooks/useSpecies";
+import CharacterCard from "../CharacterCard";
+import { useSpecies } from "../../hooks/useSpecies";
 
 describe("CharacterCard", () => {
   const mockCharacter = {

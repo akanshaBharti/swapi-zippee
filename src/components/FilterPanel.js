@@ -7,12 +7,14 @@ import React, { useState } from "react";
  * @param {Function} props.onFilterChange - Filter change handler
  * @param {Function} props.onClearFilters - Clear all filters handler
  * @param {Array} props.allCharacters - All characters for extracting unique values
+ * @param {boolean} props.isLoadingOptions - Whether filter options are still loading
  */
 const FilterPanel = ({
   filters,
   onFilterChange,
   onClearFilters,
   allCharacters,
+  isLoadingOptions = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -114,14 +116,18 @@ const FilterPanel = ({
               id="homeworld-filter"
               value={filters.homeworld}
               onChange={(e) => onFilterChange("homeworld", e.target.value)}
-              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+              disabled={isLoadingOptions}
+              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <option value="">All Homeworlds</option>
-              {getUniqueHomeworlds().map((homeworld) => (
-                <option key={homeworld} value={homeworld}>
-                  {homeworld}
-                </option>
-              ))}
+              <option value="">
+                {isLoadingOptions ? "Loading homeworlds..." : "All Homeworlds"}
+              </option>
+              {!isLoadingOptions &&
+                getUniqueHomeworlds().map((homeworld) => (
+                  <option key={homeworld} value={homeworld}>
+                    {homeworld}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -137,14 +143,18 @@ const FilterPanel = ({
               id="species-filter"
               value={filters.species}
               onChange={(e) => onFilterChange("species", e.target.value)}
-              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+              disabled={isLoadingOptions}
+              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <option value="">All Species</option>
-              {getUniqueSpecies().map((species) => (
-                <option key={species} value={species}>
-                  {species}
-                </option>
-              ))}
+              <option value="">
+                {isLoadingOptions ? "Loading species..." : "All Species"}
+              </option>
+              {!isLoadingOptions &&
+                getUniqueSpecies().map((species) => (
+                  <option key={species} value={species}>
+                    {species}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -160,14 +170,18 @@ const FilterPanel = ({
               id="film-filter"
               value={filters.film}
               onChange={(e) => onFilterChange("film", e.target.value)}
-              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+              disabled={isLoadingOptions}
+              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <option value="">All Films</option>
-              {getUniqueFilms().map((film) => (
-                <option key={film} value={film}>
-                  {film}
-                </option>
-              ))}
+              <option value="">
+                {isLoadingOptions ? "Loading films..." : "All Films"}
+              </option>
+              {!isLoadingOptions &&
+                getUniqueFilms().map((film) => (
+                  <option key={film} value={film}>
+                    {film}
+                  </option>
+                ))}
             </select>
           </div>
 

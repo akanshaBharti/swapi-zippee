@@ -68,7 +68,7 @@ The application displays the following information for each character:
 - **SWAPI** - Star Wars API for character data
 - **Picsum Photos** - Random image generation
 
-## Project Structure
+<!-- ## Project Structure
 
 ```
 src/
@@ -97,7 +97,7 @@ src/
 ├── App.css              # Application styles
 ├── index.js             # Entry point
 └── index.css            # Global styles
-```
+``` -->
 
 ## Installation
 
@@ -143,113 +143,10 @@ The application includes comprehensive tests using React Testing Library:
 npm test
 ```
 
-**Test Coverage:**
-
-- Component rendering tests
-- User interaction tests
-- Utility function tests
-- Error handling tests
-
-**Test Files:**
-
-- `CharacterCard.test.js` - Tests for character card component
-- `SearchBar.test.js` - Tests for search functionality
-- `FilterPanel.test.js` - Tests for filter controls
-- `Loading.test.js` - Tests for loading state
-- `ErrorMessage.test.js` - Tests for error handling
-- `Pagination.test.js` - Tests for pagination controls
-- `helpers.test.js` - Tests for utility functions
-
-## Design Decisions
-
-### 1. **Component Architecture**
-
-- Small, modular, and reusable components
-- Clear separation of concerns
-- Custom hooks for data fetching and state management
-
-### 2. **State Management**
-
-- React hooks (`useState`, `useEffect`) for local state
-- Custom hooks for shared logic
-- No external state management library needed (keeping it simple)
-
-### 3. **Styling Approach**
-
-- Tailwind CSS for rapid development
-- Light color palette with gradients
-- Species-based color theming for visual diversity
-- Mobile-first responsive design
-
-### 4. **Error Handling**
-
-- Graceful error states with retry functionality
-- Loading states for better UX
-- Empty states when no data is available
-
-### 5. **Performance**
-
-- Lazy loading images
-- Efficient re-renders with proper React patterns
-- Optimized pagination
-
-## API Integration
-
-The application uses the [Star Wars API (SWAPI)](https://swapi.dev/):
-
-- **Endpoint**: `https://swapi.dev/api/people/`
-- **Pagination**: 10 results per page
-- **Additional Data**: Homeworld and species details fetched as needed
-
-## Responsive Design
-
-The application is fully responsive across devices:
-
-- **Mobile** (< 640px): Single column layout
-- **Tablet** (640px - 1024px): Two column grid
-- **Desktop** (> 1024px): Three to four column grid
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-
-## Recent Features ✨
-
-**Search & Filter System** (Latest Update):
-
-- ✅ Real-time character name search
-- ✅ Filter by homeworld
-- ✅ Filter by species
-- ✅ Filter by film appearances
-- ✅ Combined search and filter support
-- ✅ Results summary and active filter indicators
-- ✅ Comprehensive test coverage
-
-## Future Enhancements
-
-Potential features for future development:
-
-- Sort by different attributes (height, mass, etc.)
-- Favorites/bookmark feature
-- Dark mode toggle
-- Character comparison feature
-- Advanced film details integration
-- Vehicle and starship information
-- Export filtered results
-
 ## License
 
 This project is open source and available under the MIT License.
 
-## Acknowledgments
-
-- [SWAPI](https://swapi.dev/) - The Star Wars API
-- [Picsum Photos](https://picsum.photos/) - Random image generation
-- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
-- [React](https://react.dev/) - UI framework
 
 ---
 

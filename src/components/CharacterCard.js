@@ -1,10 +1,10 @@
 import React from "react";
-import { useSpecies } from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/hooks/useSpecies";
+import { useSpecies } from "../hooks/useSpecies";
 import {
   getRandomImage,
   getSpeciesColor,
   extractIdFromUrl,
-} from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/utils/helpers";
+} from "../utils/helpers";
 
 /**
  * Character card component

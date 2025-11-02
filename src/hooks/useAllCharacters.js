@@ -4,7 +4,7 @@ import {
   fetchPlanet,
   fetchSpecies,
   fetchFilm,
-} from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/services/swapiService";
+} from "../services/swapiService";
 
 /**
  * Custom hook for fetching all Star Wars characters with their full details

@@ -4,7 +4,7 @@ import {
   getSpeciesColor,
   extractIdFromUrl,
   formatPopulation,
-} from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/utils/helpers";
+} from "../helpers";
 
 describe("helpers", () => {
   describe("formatDate", () => {

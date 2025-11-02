@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchPeople } from "/Volumes/Macintosh C/Web Development/Zippee Assignment/swapi-zippee/src/services/swapiService";
+import { fetchPeople } from "../services/swapiService";
 
 /**
  * Custom hook for fetching Star Wars characters with pagination
